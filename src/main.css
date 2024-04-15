@@ -1,0 +1,5 @@
+.box {
+    background-color: rgb(83, 239, 250);
+    min-height: 80px;
+    border: 0.3px solid rgb(176, 176, 176);
+}
