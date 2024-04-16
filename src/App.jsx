@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Container,
@@ -13,15 +13,61 @@ import {
   Tab,
   ListGroup,
   Modal,
+  Navbar,
+  Nav,
+  NavDropdown,
+  Offcanvas,
+  Popover,
+  Overlay,
+  Pagination,
+  Toast,
 } from "react-bootstrap";
 import CarouselImg from "./components/carousel.jpg";
+
+const NavbarComponent = () => {
+  return (
+    <Navbar expand="lg" sticky="top" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand>React Bootstrap</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="me-auto my-2 my-lg-0" navbarScroll>
+            <Nav.Link href="#form">Form</Nav.Link>
+            <Nav.Link href="#accordion">Accordion</Nav.Link>
+            <Nav.Link href="#alert">Alert</Nav.Link>
+            <Nav.Link href="#modal">Modal</Nav.Link>
+            <Nav.Link href="#card">Card</Nav.Link>
+            <Nav.Link href="#carousel">Carousel</Nav.Link>
+            <NavDropdown title="Products">
+              <NavDropdown.Item>Cars</NavDropdown.Item>
+              <NavDropdown.Item>Bikes</NavDropdown.Item>
+              <NavDropdown.Item>Trucks</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item>Aeroplane</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link>About</Nav.Link>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              className="me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="search"
+            />
+            <Button variant="outline-primary">Submit</Button>
+          </Form>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
 
 const AlertComponent = () => {
   const [show, setShow] = useState(true);
 
   if (show) {
     return (
-      <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+      <Alert variant="danger" id="alert" onClose={() => setShow(false)} dismissible>
         <Alert.Heading>Error!</Alert.Heading>
         <p>
           Change this and that and try again. Duis mollis, est non commodo
@@ -68,7 +114,7 @@ const LoadingButton = () => {
 
 const AccordionComponent = () => {
   return (
-    <Accordion className="my-3" defaultActiveKey="0">
+    <Accordion className="my-3" defaultActiveKey="0" id="accordion">
       <Accordion.Item className="mb-2" eventKey="0">
         <Accordion.Header>This is accordion</Accordion.Header>
         <Accordion.Body>
@@ -99,7 +145,7 @@ const AccordionComponent = () => {
 
 const FormComponent = () => {
   return (
-    <Form className="mt-5">
+    <Form className="mt-5" id="form">
       <Row className="mb-3">
         <Col>
           <Form.Group controlId="formControlEmail">
@@ -155,7 +201,7 @@ const FormComponent = () => {
 
 const CardComponent = () => {
   return (
-    <Card className="text-center my-3">
+    <Card className="text-center my-3" id="card">
       <Card.Header>Featured</Card.Header>
       <Card.Body>
         <Card.Title>Special title treatment</Card.Title>
@@ -171,7 +217,7 @@ const CardComponent = () => {
 
 const CarouselComponent = () => {
   return (
-    <Carousel className="my-4">
+    <Carousel className="my-4" id="carousel">
       <Carousel.Item>
         <Image src={CarouselImg} style={{ width: "100%", height: "500px" }} />
         <Carousel.Caption>
@@ -228,35 +274,127 @@ const TabComponent = () => {
   );
 };
 
-const ModalComponent = (props) => {
-    const [show, setShow] = useState(false);
+const ModalComponent = () => {
+  const [show, setShow] = useState(false);
 
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
-    return (
-        <>
-            <Button className="my-3" variant="primary" onClick={handleShow}>
-                Launch Modal
-            </Button>
+  return (
+    <>
+      <Button className="my-3" variant="primary" onClick={handleShow} id="modal">
+        Launch Modal
+      </Button>
 
-            <Modal className="my-3" show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal Heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Modal Body</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={handleClose}>Save Changes</Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
+      <Modal className="my-3" show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal Heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Modal Body</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
+
+const OffcanvasComponent = () => {
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => setShow(true);
+  const handleHide = () => setShow(false);
+
+  return (
+    <>
+      <Button variant="primary" className="d-block mb-3" onClick={handleShow}>
+        Open Offcanvas
+      </Button>
+
+      <Offcanvas onHide={handleHide} show={show} scroll>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
+  );
+};
+
+const OverlayComponent = () => {
+  const [show, setShow] = useState(false);
+  const target = useRef();
+
+  return (
+    <>
+      <Button variant="success" className="mb-3" ref={target} onClick={() => setShow(!show)}>
+        Overlay
+      </Button>
+      <Overlay target={target.current} show={show} placement="right">
+        <Popover>
+          <Popover.Header>Popover right</Popover.Header>
+          <Popover.Body>
+            {" "}
+            And here's some <strong>amazing</strong> content. It's very
+            engaging. right?
+          </Popover.Body>
+        </Popover>
+      </Overlay>
+    </>
+  );
+};
+
+const ToastComponent = () => {
+  const [show, setShow] = useState(false);
+
+  return (
+    <>
+      <Button variant="primary" className="d-block mb-2" onClick={() => setShow(!show)}>Show Toast</Button>
+      <Toast show={show} onClose={() => setShow(false)}>
+        <Toast.Header>
+          <Image src={CarouselImg} height={20} className="rounded me-2" />
+          <strong className="me-auto">Bootstrap</strong>
+          <small>11 mins ago</small>
+        </Toast.Header>
+        <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+      </Toast>
+    </>
+  );
+}
+
+const PaginationComponent = () => {
+  return (
+    <Pagination className="flex-row justify-content-center  ">
+      <Pagination.First />
+      <Pagination.Prev />
+      <Pagination.Item>{1}</Pagination.Item>
+      <Pagination.Ellipsis />
+      
+      <Pagination.Item>{10}</Pagination.Item>
+      <Pagination.Item>{11}</Pagination.Item>
+      <Pagination.Item active>{12}</Pagination.Item>
+      <Pagination.Item>{13}</Pagination.Item>
+      <Pagination.Item disabled>{14}</Pagination.Item>
+
+      <Pagination.Ellipsis />
+      <Pagination.Next />
+      <Pagination.Last />
+    </Pagination>
+  );
 }
 
 const App = () => {
   return (
     <Container fluid="sm">
+      <NavbarComponent />
       <FormComponent />
       <AccordionComponent />
       <AlertComponent />
@@ -265,6 +403,10 @@ const App = () => {
       <CarouselComponent />
       <TabComponent />
       <ModalComponent />
+      <OffcanvasComponent />
+      <OverlayComponent />
+      <ToastComponent />
+      <PaginationComponent />
     </Container>
   );
 };
